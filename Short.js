@@ -30,9 +30,18 @@ function OnEvent(element, event, callback, useCapture = false){
 
 //Requests-----------------------------------------------------------------------------------------
 
-function Get(url, callback){
+function Get(url, callback, options = null){
     var http = new XMLHttpRequest();
     http.open('GET', url, true);
+
+    //headers
+    if(options){
+        if(options.authorization) http.setRequestHeader('Authorization', options.authorization);
+    }
+    else{ 
+        
+    }
+
     http.onreadystatechange = function() {
         if(http.readyState == 4 && http.status == 200) {
             //callback when ready
@@ -42,10 +51,19 @@ function Get(url, callback){
     http.send();
 }
 
-function Post(url, data, callback, type = 'application/json'){
+function Post(url, data, callback, options = null){
     var http = new XMLHttpRequest();
     http.open('POST', url, true);
-    http.setRequestHeader('Content-type', type);
+    
+    //headers
+    if(options){
+        if(options.contentType) http.setRequestHeader('Content-type', options.contentType);
+        if(options.authorization) http.setRequestHeader('Authorization', options.authorization);
+    }
+    else{ 
+        http.setRequestHeader('Content-type', 'application/json');
+    }
+
     http.onreadystatechange = function() {
         if(http.readyState == 4 && http.status == 200) {
             //callback when ready
